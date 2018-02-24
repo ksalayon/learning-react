@@ -68,19 +68,13 @@ class Game extends React.Component {
   }
 
   handleClick(i) {
-    // const history = this.state.history;
-    console.log('this.state.history: ', this.state.history);
-    console.log('this.state.stepNumber: ', this.state.stepNumber);
 
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    console.log('history at click: ', history);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
 
-    if (calculateWinner(squares) || squares[i]) {
-      // console.log('winner!');
-      //TODO: Implement correctly with new data structure
-      // return;
+    if (calculateWinner(squares)) {
+      return;
     }
 
     squares[i].val = this.state.xIsNext ? 'X' : 'O';
@@ -109,7 +103,6 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-
     const moves = history.map((step, move) => {
     const desc = move ?
       'Go to move #' + move + ' (x: ' + this.state.currentSquare.x + ' y: ' + this.state.currentSquare.y + ')':
@@ -123,7 +116,7 @@ class Game extends React.Component {
 
     let status;
     if (winner) {
-      status = 'Winner: ' + winner;
+      status = 'Winner: ' + winner.val;
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
