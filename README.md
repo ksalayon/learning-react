@@ -1,4 +1,4 @@
-# My Personal Learnings on ReactDOM
+# My Personal Learnings on React
 ## This constitutes the basic tutorial from reactjs.orc website but goes further to implement
 ## the additional features stated below:
 * Display the location for each move in the format (col, row) in the move history list.
