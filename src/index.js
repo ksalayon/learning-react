@@ -5,7 +5,7 @@ import './index.css';
 
 function Square (props) {
   return (
-    <button className="square" onClick={props.onClick}>
+    <button className={(props.current) ? 'current square' : 'square'} onClick={props.onClick}>
       {props.value}
     </button>
   );
@@ -16,6 +16,7 @@ class Board extends React.Component {
   renderSquare(i) {
     return <Square
       value={this.props.squares[i].val}
+      current={this.props.squares[i].current}
       onClick={() => this.props.onClick(i)}
     />;
   }
@@ -53,7 +54,8 @@ class Game extends React.Component {
       sqrs[sqr] = {
         val:null,
         x:null,
-        y:null
+        y:null,
+        current:false
       };
     }
 
@@ -67,19 +69,32 @@ class Game extends React.Component {
     };
   }
 
+  clearHighlight(squares) {
+    const sqrs = [...squares];
+    for(var sqr in sqrs) {
+      sqrs[sqr].current = false;
+    }
+
+    return sqrs;
+  }
+
   handleClick(i) {
 
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
-    const squares = [...current.squares];
+    // const squares = [...current.squares];
+
+    const squares = this.clearHighlight(current.squares);
 
     if (calculateWinner(squares)) {
       return;
     }
+
     squares[i] = Object.assign({}, {
       val: this.state.xIsNext ? 'X' : 'O',
       x: (((i+1) % 3) === 0) ? 3 : ((i+1) % 3),
       y: (Math.round((i+1)/3)),
+      current: true
     });
 
     this.setState({
@@ -92,10 +107,19 @@ class Game extends React.Component {
     });
   }
 
-  jumpTo(step) {
+  jumpTo(move, step) {
+    const selected = this.state.history[this.state.stepNumber];
+
+    step.squares.map(function(sqr){
+      if(sqr.x === step.move.x && sqr.y === step.move.y && sqr.val === step.move.val){
+        sqr.current = true;
+      } else {
+        sqr.current = false;
+      }
+    });
     this.setState({
-      stepNumber: step,
-      xIsNext: (step % 2) === 0,
+      stepNumber: move,
+      xIsNext: (move % 2) === 0,
     });
   }
 
@@ -111,7 +135,7 @@ class Game extends React.Component {
 
      return (
        <li  key={move}>
-         <button onClick={() => this.jumpTo(move)}>{desc}</button>
+         <button onClick={() => this.jumpTo(move, step)}>{desc}</button>
        </li>
      );
    });
