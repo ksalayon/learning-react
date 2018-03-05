@@ -115,7 +115,6 @@ class Game extends React.Component {
       }],
       xIsNext: true,
       stepNumber: 0,
-      currentSquare: null,
       order:'asc'
     };
   }
@@ -131,7 +130,14 @@ class Game extends React.Component {
 
   handleClick(i) {
 
-    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    var history = [...this.state.history];
+    if(this.state.order === 'desc'){
+      history = history.reverse();
+      history = history.slice(0, history.length - this.state.stepNumber);
+    } else {
+      history = history.slice(0, this.state.stepNumber + 1);
+    }
+
     const current = history[history.length - 1];
     const squares = this.clearHighlight(current.squares);
 
@@ -146,14 +152,31 @@ class Game extends React.Component {
       current: true
     });
 
-    this.setState({
-      history: history.concat([{
-        squares: squares,
-        move: squares[i]
-      }]),
-      xIsNext: !this.state.xIsNext,
-      stepNumber: history.length,
-    });
+    var next = !this.state.xIsNext;
+    if(this.state.order === 'desc'){
+      next = this.state.xIsNext;
+    }
+
+    var hist = history.concat([{
+      squares: squares,
+      move: squares[i]
+    }]);
+
+    var toStep = (this.state.order !== 'desc') ? hist.length - 1: 0;
+    if(this.state.order === 'desc') {
+      this.setState({
+        history: hist.reverse(),
+        stepNumber: toStep,
+        xIsNext: !next,
+      });
+
+    } else {
+      this.setState({
+        history: hist,
+        xIsNext: next,
+        stepNumber: toStep,
+      });
+    }
   }
 
   jumpTo(move, step) {
@@ -167,30 +190,37 @@ class Game extends React.Component {
       });
     }
 
+    var next = (move % 2) === 0;
+    if(this.state.order === 'desc'){
+      next = !((move % 2) === 0)
+    }
+
     this.setState({
       stepNumber: move,
-      xIsNext: (move % 2) === 0,
+      xIsNext: next,
     });
   }
 
   toggleOrder(){
     var toOrder = (this.state.order === 'asc') ? 'desc' : 'asc';
-    var toStep = (toOrder === 'asc') ? this.state.history.length - 1 : 0;
+    var toStep = (toOrder === 'asc') ? this.state.history.length : 0;
     var reversedHistory = [...this.state.history];
     reversedHistory.reverse();
-    console.log('toStep: ', toStep, 'toOrder', toOrder);
+
     this.setState({
       order:toOrder,
       history: reversedHistory,
       stepNumber: toStep,
-      xIsNext: (toStep % 2) === 0,
+      xIsNext: this.state.xIsNext,
     });
   }
 
   render() {
 
     const history = this.state.history;
+
     const current = history[this.state.stepNumber];
+
     const winner = app.calculateWinner(current.squares);
     const moves = history.map((step, move) => {
 
