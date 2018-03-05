@@ -203,7 +203,7 @@ class Game extends React.Component {
 
   toggleOrder(){
     var toOrder = (this.state.order === 'asc') ? 'desc' : 'asc';
-    var toStep = (toOrder === 'asc') ? this.state.history.length : 0;
+    var toStep = (toOrder === 'asc') ? this.state.history.length - 1 : 0;
     var reversedHistory = [...this.state.history];
     reversedHistory.reverse();
 
@@ -218,7 +218,6 @@ class Game extends React.Component {
   render() {
 
     const history = this.state.history;
-
     const current = history[this.state.stepNumber];
 
     const winner = app.calculateWinner(current.squares);
