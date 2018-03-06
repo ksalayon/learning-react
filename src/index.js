@@ -96,9 +96,9 @@ class Board extends React.Component {
 
 class Game extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   componentWillMount(){
     this.init();
@@ -200,6 +200,7 @@ class Game extends React.Component {
         } else {
           sqr.current = false;
         }
+        return sqr;
       });
     }
 
