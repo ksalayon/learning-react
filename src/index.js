@@ -246,11 +246,13 @@ class Game extends React.Component {
         <button onClick={() => this.jumpTo(move, step)}>{desc}</button>
         </li>
       );
-   });
+    });
 
     let status;
     if (winner) {
       status = 'Winner: ' + winner.val;
+    } else if(!winner && history.length === 10) {
+      status = 'It\'s a Draw!';
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
