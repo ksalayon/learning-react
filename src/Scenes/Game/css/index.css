@@ -33,7 +33,6 @@ ol, ul {
 
 .square.current{
     font-weight: bold;
-    color:#0066ff;
 }
 
 .square.win{
