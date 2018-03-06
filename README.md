@@ -1,5 +1,5 @@
 # Learning React
-## This constitutes the basic tutorial from reactjs.orc website but goes further to implement the additional features stated below:
+## This constitutes the basic tutorial from the reactjs.org website but goes further to implement the additional features stated below:
 * Display the location for each move in the format (col, row) in the move history list.
 * Bold the currently selected item in the move list.
 * Rewrite Board to use two loops to make the squares instead of hardcoding them.
