@@ -34,6 +34,9 @@ var app = (function() {
       for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (sqrs[a].val && sqrs[a].val === sqrs[b].val && sqrs[a].val === sqrs[c].val) {
+          sqrs[a].win = true;
+          sqrs[b].win = true;
+          sqrs[c].win = true;
           return sqrs[a];
         }
       }
@@ -51,7 +54,7 @@ var app = (function() {
 
 function Square (props) {
   return (
-    <button className={(props.current) ? 'current square' : 'square'} onClick={props.onClick}>
+    <button className={(props.win) ? 'win square' : ((props.current) ? 'current square' : 'square')} onClick={props.onClick}>
       {props.value}
     </button>
   );
@@ -65,6 +68,7 @@ class Board extends React.Component {
       key={'col' + i}
       current={this.props.squares[i].current}
       onClick={() => this.props.onClick(i)}
+      win={this.props.squares[i].win}
     />;
   }
 
@@ -100,7 +104,8 @@ class Game extends React.Component {
         val:null,
         x:null,
         y:null,
-        current:false
+        current:false,
+        win:false
       };
     }
 
@@ -221,6 +226,7 @@ class Game extends React.Component {
     const current = history[this.state.stepNumber];
 
     const winner = app.calculateWinner(current.squares);
+
     const moves = history.map((step, move) => {
 
       const desc = (step.move.val !== null) ?
