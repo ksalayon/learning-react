@@ -98,6 +98,13 @@ class Game extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  componentWillMount(){
+    this.init();
+  }
+
+  init() {
     const sqrs = Array(9).fill(null);
     for(var sqr in sqrs) {
       sqrs[sqr] = {
@@ -109,7 +116,7 @@ class Game extends React.Component {
       };
     }
 
-    this.state = {
+    this.setState({
       history: [{
         squares: sqrs,
         move: {
@@ -121,7 +128,8 @@ class Game extends React.Component {
       xIsNext: true,
       stepNumber: 0,
       order:'asc'
-    };
+    });
+
   }
 
   clearHighlight(squares) {
@@ -256,6 +264,7 @@ class Game extends React.Component {
           />
         </div>
         <div className="game-info">
+          <div><button onClick={() => this.init()}>Restart Game</button></div>
           <div><button onClick={() => this.toggleOrder()}>Toggle Order - current order: {this.state.order}</button></div>
           <div>{ status }</div>
           <ol>{ moves }</ol>
