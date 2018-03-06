@@ -1,11 +1,9 @@
+import React from 'react';
+
 import Board from './Components/Board.js';
-import { gameService as app } from '/src/Services/GameService.js';
+import { gameService as app } from '../../Services/GameService.js';
 
-export class Game extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
+export default class Game extends React.Component {
 
   componentWillMount(){
     this.init();
@@ -107,6 +105,7 @@ export class Game extends React.Component {
         } else {
           sqr.current = false;
         }
+        return sqr;
       });
     }
 
@@ -173,10 +172,12 @@ export class Game extends React.Component {
           />
         </div>
         <div className="game-info">
-          <div><button onClick={() => this.init()}>Restart Game</button></div>
           <div><button onClick={() => this.toggleOrder()}>Toggle Order - current order: {this.state.order}</button></div>
           <div>{ status }</div>
           <ol>{ moves }</ol>
+        </div>
+        <div className="game-info">
+          <div><button onClick={() => this.init()}>Restart Game</button></div>
         </div>
       </div>
     );

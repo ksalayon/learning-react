@@ -1,7 +1,8 @@
-import Square from 'Square.js';
-import { gameService as app } from '/src/Services/GameService.js';
+import React from 'react';
+import Square from './Square.js';
+import { gameService as app } from '../../../Services/GameService.js';
 
-export class Board extends React.Component {
+export default class Board extends React.Component {
 
   renderSquare(i) {
     return <Square
